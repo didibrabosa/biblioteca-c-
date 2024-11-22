@@ -24,11 +24,11 @@ public class Usuario
     public string Nome {get; set;} = string.Empty;
     public int Idade {get; set;} = int.MaxValue;
     public DateTime DataDeNascimento {get; set;} = DateTime.MinValue;
-    public int Cpf {get; set;} = int.MaxValue;
-    public int NumeroDeTelefone {get; set;} = int.MaxValue;
+    public string Cpf {get; set;} = string.Empty;
+    public string NumeroDeTelefone {get; set;} = string.Empty;
     public string Email {get; set;} = string.Empty;
 
-    public Usuario(int id, string nome, int idade, DateTime dataDeNascimento, int cpf, int numeroDeTelefone, string email)
+    public Usuario(int id, string nome, int idade, DateTime dataDeNascimento, string cpf, string numeroDeTelefone, string email)
     {
         Id = id;
         Nome = nome;
