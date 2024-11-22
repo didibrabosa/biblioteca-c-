@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 public class Livro
 {
     public int Id {get; set;} 
@@ -106,9 +104,8 @@ public class Emprestimo
         if (dataDevolucao == DateTime.MinValue)
             throw new ArgumentException("Data de devolução do empréstimo não pode ser vazia.");
         
-
-        if (DataDevolucao < DateTime.Now)
-            throw new ArgumentException("Data de devolução do empréstimo não pode ser anterior à data de hoje.");
+        if (string.IsNullOrWhiteSpace(status))
+            throw new ArgumentException("Status do empréstimo não pode ser vazio.");
     }
 }
 
