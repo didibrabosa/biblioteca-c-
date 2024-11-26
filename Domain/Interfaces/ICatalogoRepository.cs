@@ -1,3 +1,5 @@
+using Biblioteca.Entidades;
+
 public interface ICatalogoRepository
 {
     Task<Catalogo> AdicionarCatalogo(Catalogo catalogo);

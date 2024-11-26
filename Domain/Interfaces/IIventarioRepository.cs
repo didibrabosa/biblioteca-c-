@@ -1,3 +1,5 @@
+using Biblioteca.Entidades;
+
 public interface IIventarioRepository
 {
     Task<Inventario> AdicionarInventario(Inventario inventario);

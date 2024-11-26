@@ -1,3 +1,5 @@
+using Biblioteca.Entidades;
+
 public interface IEmprestimoRepository
 {
     Task<Emprestimo> AdicionarEmprestimo(Emprestimo emprestimo);

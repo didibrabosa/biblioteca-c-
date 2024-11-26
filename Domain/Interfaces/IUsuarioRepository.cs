@@ -1,3 +1,5 @@
+using Biblioteca.Entidades;
+
 public interface IUsuarioRepository
 {
     Task<Usuario> AdicionarUsuario(Usuario usuario);

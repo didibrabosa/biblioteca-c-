@@ -1,3 +1,5 @@
+using Biblioteca.Entidades;
+
 public interface ILivroRepository
 {
     Task<Livro> AdicionarLivro(Livro livro);
