@@ -1,23 +1,23 @@
 public class Emprestimo
 {
     public int Id {get; set;} 
-    public int LivroId {get; set;} 
+    public int InventarioId {get; set;} 
     public int UsuarioId {get; set;}
     public DateTime DataEmprestimo {get; set;} = DateTime.MinValue;
     public DateTime DataDevolucao {get; set;} = DateTime.MinValue;
     public string Status {get; set;} = string.Empty;
     
 
-    public Emprestimo(int id, int livroId, int usuarioId, DateTime dataEmprestimo, DateTime dataDevolucao, string status)
+    public Emprestimo(int id, int inventarioId, int usuarioId, DateTime dataEmprestimo, DateTime dataDevolucao, string status)
     {
         Id = id;
-        LivroId = livroId;
+        InventarioId = inventarioId;
         UsuarioId = usuarioId;
         DataEmprestimo = dataEmprestimo;
         DataDevolucao = dataDevolucao;
         Status = status;
 
-        if (livroId <= 0)
+        if (inventarioId <= 0)
             throw new ArgumentException("Livro do empréstimo não pode ser zero ou negativo.");
 
         if (usuarioId <= 0)
