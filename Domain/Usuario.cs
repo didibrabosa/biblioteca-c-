@@ -20,25 +20,7 @@ namespace Biblioteca.Entidades
             DataDeNascimento = dataDeNascimento;
             Cpf = cpf;
             Telefone = telefone;
-            Email = email;
-
-            if (string.IsNullOrWhiteSpace(nome))
-                throw new ArgumentException("Nome do usuário não pode ser vazio.");
-            
-            if (idade <= 0)
-                throw new ArgumentException("Idade do usuário não pode ser zero ou negativa.");
-
-            if (dataDeNascimento == DateTime.MinValue)
-                throw new ArgumentException("Data de nascimento do usuário não pode ser vazia.");
-
-            if (string.IsNullOrWhiteSpace(cpf))
-                throw new ArgumentException("CPF do usuário não pode ser vazio.");
-            
-            if (string.IsNullOrWhiteSpace(telefone))
-                throw new ArgumentException("Número de telefone do usuário não pode ser vazio.");
-
-            if (string.IsNullOrWhiteSpace(email))
-                throw new ArgumentException("Email do usuário não pode ser vazio.");     
+            Email = email;     
         }
 
         private bool ValidarCpf (string cpf)
