@@ -1,44 +1,145 @@
-var builder = WebApplication.CreateBuilder(args);
+using Biblioteca.Entidades; 
 
-// Add services to the container.
-// Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen();
-
-var app = builder.Build();
-
-// Configure the HTTP request pipeline.
-if (app.Environment.IsDevelopment())
+class Program
 {
-    app.UseSwagger();
-    app.UseSwaggerUI();
-}
+    static async Task Main(string[] args)
+    {
+        var connectionString = "server=localhost;port=3306;database=app_db;user=user;password=user123;";
+        var usuarioRepository = new UsuarioRepository(connectionString);
+        var usuarioService = new UsuarioService(usuarioRepository);
 
-app.UseHttpsRedirection();
+        while (true)
+        {
+            Console.WriteLine("1. Adicionar Usuário");
+            Console.WriteLine("2. Buscar Usuário por ID");
+            Console.WriteLine("3. Listar Todos os Usuários");
+            Console.WriteLine("4. Atualizar Usuário");
+            Console.WriteLine("5. Deletar Usuário");
+            Console.WriteLine("0. Sair");
+            Console.Write("Escolha uma opção: ");
 
-var summaries = new[]
-{
-    "Freezing", "Bracing", "Chilly", "Cool", "Mild", "Warm", "Balmy", "Hot", "Sweltering", "Scorching"
-};
+            var opcao = Console.ReadLine();
+            switch (opcao)
+            {
+                case "1":
+                    await AdicionarUsuario(usuarioService);
+                    return;
+                case "2":
+                    await BuscarUsuario(usuarioService);
+                    return;
+                case "3":
+                    await BuscarTodosUsuarios(usuarioService);
+                    return;
+                case "4":
+                    await AtualizarUsuario(usuarioService);
+                    return;
+                case "5": 
+                    await DeletarUsuario(usuarioService);
+                    return;
+                case "0":
+                    break;
+                default:
+                    Console.WriteLine("Opção inválida.");
+                    return;
 
-app.MapGet("/weatherforecast", () =>
-{
-    var forecast =  Enumerable.Range(1, 5).Select(index =>
-        new WeatherForecast
-        (
-            DateOnly.FromDateTime(DateTime.Now.AddDays(index)),
-            Random.Shared.Next(-20, 55),
-            summaries[Random.Shared.Next(summaries.Length)]
-        ))
-        .ToArray();
-    return forecast;
-})
-.WithName("GetWeatherForecast")
-.WithOpenApi();
+            }
+        }
+    }
 
-app.Run();
+    static async Task AdicionarUsuario(UsuarioService usuarioService)
+    {
+        Console.Write("Nome: ");
+        var nome = Console.ReadLine();
 
-record WeatherForecast(DateOnly Date, int TemperatureC, string? Summary)
-{
-    public int TemperatureF => 32 + (int)(TemperatureC / 0.5556);
+        Console.Write("Idade: ");
+        var idade = int.Parse(Console.ReadLine());
+
+        Console.WriteLine("Data de Nascimento (yyyy-MM-dd): ");
+        var DataDeNascimento = DateTime.Parse(Console.ReadLine());
+
+        Console.WriteLine("CPF: ");
+        var cpf = Console.ReadLine();
+
+        Console.WriteLine("Telefone: ");
+        var telefone = Console.ReadLine();
+        
+        Console.WriteLine("Email: ");
+        var email = Console.ReadLine();
+
+        var usuario = new Usuario
+        {
+            Nome = nome,
+            Idade = idade,
+            DataDeNascimento = DataDeNascimento,
+            Cpf = cpf,
+            Telefone = telefone,
+            Email = email
+        };
+
+        var resultado = await usuarioService.AdicionarUsuario(usuario);
+        Console.WriteLine($"Usuario adicionado com ID: {resultado.Id}");
+    }
+
+    static async Task BuscarUsuario(UsuarioService usuarioService)
+    {
+        Console.WriteLine("Digite o ID do Usuário: ");
+        var id = int.Parse(Console.ReadLine());
+        var usuario = await usuarioService.BuscarUsuario(id);
+
+        if (usuario != null)
+        {
+            Console.WriteLine($"ID: {usuario.Id}, Nome: {usuario.Nome}, Idade: {usuario.Idade}, Data de Nascimento: {usuario.DataDeNascimento}, CPF: {usuario.Cpf}, Telefone: {usuario.Telefone}, Email: {usuario.Email}");
+        }
+        else
+        {
+            Console.WriteLine("Usuário não encontrado.");
+        }
+    }
+
+    static async Task BuscarTodosUsuarios(UsuarioService usuarioService)
+    {
+        var usuarios = await usuarioService.BuscarTodosUsuarios();
+
+        foreach (var usuario in usuarios)
+        {
+            Console.WriteLine($"ID: {usuario.Id}, Nome: {usuario.Nome}, Idade: {usuario.Idade}, Data de Nascimento: {usuario.DataDeNascimento}, CPF: {usuario.Cpf}, Telefone: {usuario.Telefone}, Email: {usuario.Email}");
+        }
+    }
+
+    static async Task AtualizarUsuario(UsuarioService usuarioService)
+    {
+        Console.Write("Digite o ID do usuário a ser atualizado: ");
+        var id = int.Parse(Console.ReadLine());
+
+        var usuarioExistente = await usuarioService.BuscarUsuario(id);
+        if (usuarioExistente == null)
+        {
+            Console.WriteLine("Usuário não encontrado.");
+            return;
+        }
+
+        Console.Write("Novo Nome (deixe em branco para não alterar): ");
+        var nome = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(nome)) usuarioExistente.Nome = nome;
+
+        Console.Write("Nova Idade (deixa em branco para não alterar): ");
+        var idade = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(idade)) usuarioExistente.Idade = int.Parse(idade);
+
+        Console.Write("Novo Telefone (deixe em branco para não alterar): ");
+        var telefone = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(telefone)) usuarioExistente.Telefone = telefone;
+
+        await usuarioService.AtualizarUsuario(usuarioExistente);
+        Console.WriteLine("Usuário atualizado com sucesso.");
+    }
+
+    static async Task DeletarUsuario(UsuarioService usuarioService)
+    {
+        Console.Write("Digite o ID do usuário a ser detalhado: ");
+        var id = int.Parse(Console.ReadLine());
+
+        var sucesso = await usuarioService.DeletarUsuario(id);
+        Console.WriteLine(sucesso ? "Usuário deletado com sucesso." : "Erro ao deletar usuário.");
+    }
 }
