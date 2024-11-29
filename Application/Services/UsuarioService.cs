@@ -32,4 +32,32 @@ public class UsuarioService
             return await _usuarioRepository.AdicionarUsuario(usuario);
     }
 
+    public async Task<Usuario> BuscarUsuario(int id) => await _usuarioRepository.BuscarUsuario(id);
+    // {
+    //     if (id <= 0)
+    //         throw new ArgumentException("O ID do Usuário deve ser maior que zero");
+
+    //         var usuario = await _usuarioRepository.BuscarUsuario(id);
+
+    //         if (usuario == null)
+    //             throw new KeyNotFoundException($"Usuário com ID {id} não encontrado."); 
+            
+    //         return usuario;
+    // }
+
+    
+    public async Task<IEnumerable<Usuario>> BuscarTodosUsuarios() => await _usuarioRepository.BuscarTodosUsuarios();
+    // {
+    //     var usuarios = await _usuarioRepository.BuscarTodosUsuarios();
+
+    //     if (usuarios == null || !usuarios.Any())
+    //         throw new KeyNotFoundException("Nenhum usuário encotrado.");
+
+    //     return usuarios;  
+    // }
+
+    public async Task<Usuario> AtualizarUsuario(Usuario usuario) => await  _usuarioRepository.AtualizarUsuario(usuario);
+
+    public async Task<bool> DeletarUsuario(int id) => await _usuarioRepository.DeletarUsuario(id);
+
 }
