@@ -1,18 +1,20 @@
-version: '3.8'
+version: '3.9'
+
 services:
   mysql:
     image: mysql:8.0
     container_name: mysql_container
     restart: always
     environment:
-      MYSQL_ROOT_PASSWORD: rootpassword
-      MYSQL_DATABASE: my_database
-      MYSQL_USER: user
-      MYSQL_PASSWORD: userpassword
+      MYSQL_ROOT_PASSWORD: root123  # Defina a senha do root
+      MYSQL_DATABASE: app_db        # Nome do banco a ser criado
+      MYSQL_USER: app_user          # Nome do usuário adicional
+      MYSQL_PASSWORD: user123       # Senha do usuário adicional
     ports:
-      - "3306:3306"
+      - "3306:3306"                 # Mapeia a porta 3306 do container para a máquina host
     volumes:
-      - mysql_data:/var/lib/mysql
-      - ./init.sql:/docker-entrypoint-initdb.d/init.sql
+      - mysql_data:/var/lib/mysql   # Persistência de dados
+
 volumes:
   mysql_data:
+    

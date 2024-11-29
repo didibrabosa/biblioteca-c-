@@ -12,6 +12,8 @@ namespace Biblioteca.Entidades
         public string Telefone {get; set;} = string.Empty;
         public string Email {get; set;} = string.Empty;
 
+        public Usuario() { }
+        
         public Usuario(int id, string nome, int idade, DateTime dataDeNascimento, string cpf, string telefone, string email)
         {
             Id = id;
