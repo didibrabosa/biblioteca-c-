@@ -12,9 +12,9 @@ public class UsuarioRepository : IUsuarioRepository
 
     public async Task<Usuario> AdicionarUsuario(Usuario usuario)
     {
-        const string query = @"INSERT INT Usuarios (Nome, Idade, DataDeNascimento, Cpf, Telefone, Email)
+        const string query = @"INSERT INTO Usuarios (Nome, Idade, DataDeNascimento, Cpf, Telefone, Email)
         VALUES (@Nome, @Idade, @DataDeNascimento, @Cpf, @Telefone, @Email);
-        SELECT LAST _INSERT_ID();";
+        SELECT LAST_INSERT_ID();";
 
         using var connection = new MySqlConnection(_connectionString);
         using var command = new MySqlCommand(query, connection);
@@ -113,7 +113,7 @@ public class UsuarioRepository : IUsuarioRepository
     public async Task<Usuario> AtualizarUsuario(Usuario usuario)
     {
         const string query = @"UPDATE Usuarios
-        SET Nome = @Nome, Idade = @Idade, DataDe Nascimento = @DataDeNascimento, 
+        SET Nome = @Nome, Idade = @Idade, DataDeNascimento = @DataDeNascimento, 
         Cpf = @Cpf, Telefone = @Telefone, Email = @Email
         WHERE Id = @Id";
 
