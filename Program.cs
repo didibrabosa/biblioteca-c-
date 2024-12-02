@@ -4,7 +4,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        var connectionString = "server=localhost;port=3306;database=app_db;user=user;password=user123;";
+        var connectionString = "server=localhost;port=3307;database=app_db;user=user;password=user123;";
         var usuarioRepository = new UsuarioRepository(connectionString);
         var usuarioService = new UsuarioService(usuarioRepository);
 
@@ -23,21 +23,21 @@ class Program
             {
                 case "1":
                     await AdicionarUsuario(usuarioService);
-                    return;
+                    continue;
                 case "2":
                     await BuscarUsuario(usuarioService);
-                    return;
+                    continue;
                 case "3":
                     await BuscarTodosUsuarios(usuarioService);
-                    return;
+                    continue;
                 case "4":
                     await AtualizarUsuario(usuarioService);
-                    return;
+                    continue;
                 case "5": 
                     await DeletarUsuario(usuarioService);
-                    return;
+                    continue;
                 case "0":
-                    break;
+                    return;
                 default:
                     Console.WriteLine("Opção inválida.");
                     return;
@@ -126,9 +126,21 @@ class Program
         var idade = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(idade)) usuarioExistente.Idade = int.Parse(idade);
 
+        Console.Write("Nova Data de Nascimento (deixe em branco para não alterar): ");
+        var data = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(data)) usuarioExistente.DataDeNascimento = DateTime.Parse(data);
+
+        Console.Write("Novo Cpf (deixe em branco para não alterar): ");
+        var cpf = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(cpf)) usuarioExistente.Cpf = cpf;
+
         Console.Write("Novo Telefone (deixe em branco para não alterar): ");
         var telefone = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(telefone)) usuarioExistente.Telefone = telefone;
+
+        Console.Write("Novo Email (Deixe em branco para não alterar): ");
+        var email = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(email)) usuarioExistente.Email = email;
 
         await usuarioService.AtualizarUsuario(usuarioExistente);
         Console.WriteLine("Usuário atualizado com sucesso.");
