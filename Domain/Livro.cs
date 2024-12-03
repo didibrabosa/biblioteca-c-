@@ -9,6 +9,8 @@ namespace Biblioteca.Entidades
         public int NumeroDePaginas {get; set;} = int.MaxValue;
         public int AnoPublicacao {get; set;} = int.MaxValue;
 
+        public Livro() { }
+
         public Livro(int id, string titulo, string genero, string autor, int numeroDePaginas, int anoPublicacao)
         {
             Id = id;
