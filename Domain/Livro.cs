@@ -17,21 +17,6 @@ namespace Biblioteca.Entidades
             Autor = autor;
             NumeroDePaginas = numeroDePaginas;
             AnoPublicacao = anoPublicacao;
-
-            if (string.IsNullOrWhiteSpace(titulo))
-                throw new ArgumentException("Título do livro não pode ser vazio.");
-            
-            if (string.IsNullOrWhiteSpace(genero))
-                throw new ArgumentException("Gênero do livro não pode ser vazio.");
-
-            if (string.IsNullOrWhiteSpace(autor))
-                throw new ArgumentException("Autor do livro não pode ser vazio.");
-
-            if (numeroDePaginas <= 0)
-                throw new ArgumentException("Número de páginas do livro não pode ser zero ou negativo.");
-
-            if (anoPublicacao <= 0)
-                throw new ArgumentException("Ano de publicação do livro não pode ser zero ou negativo.");
         }
     }
 }
