@@ -4,7 +4,7 @@ class Program
 {
     static async Task Main(string[] args)
     {
-        var connectionString = "server=localhost;port=3307;database=app_db;user=user;password=user123;";
+        var connectionString = "server=localhost;port=3307;database=app_db;user=app_user;password=user123;";
         var usuarioRepository = new UsuarioRepository(connectionString);
         var usuarioService = new UsuarioService(usuarioRepository);
 
@@ -41,7 +41,6 @@ class Program
                 default:
                     Console.WriteLine("Opção inválida.");
                     return;
-
             }
         }
     }
@@ -86,14 +85,7 @@ class Program
         var id = int.Parse(Console.ReadLine());
         var usuario = await usuarioService.BuscarUsuario(id);
 
-        if (usuario != null)
-        {
-            Console.WriteLine($"ID: {usuario.Id}, Nome: {usuario.Nome}, Idade: {usuario.Idade}, Data de Nascimento: {usuario.DataDeNascimento}, CPF: {usuario.Cpf}, Telefone: {usuario.Telefone}, Email: {usuario.Email}");
-        }
-        else
-        {
-            Console.WriteLine("Usuário não encontrado.");
-        }
+        Console.WriteLine($"ID: {usuario.Id}, Nome: {usuario.Nome}, Idade: {usuario.Idade}, Data de Nascimento: {usuario.DataDeNascimento}, CPF: {usuario.Cpf}, Telefone: {usuario.Telefone}, Email: {usuario.Email}");        
     }
 
     static async Task BuscarTodosUsuarios(UsuarioService usuarioService)
@@ -137,7 +129,7 @@ class Program
         Console.Write("Novo Telefone (deixe em branco para não alterar): ");
         var telefone = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(telefone)) usuarioExistente.Telefone = telefone;
-
+        
         Console.Write("Novo Email (Deixe em branco para não alterar): ");
         var email = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(email)) usuarioExistente.Email = email;
