@@ -1,5 +1,3 @@
-using System.Text.RegularExpressions;
-
 namespace Biblioteca.Entidades
 {
     public class Usuario
@@ -24,33 +22,5 @@ namespace Biblioteca.Entidades
             Telefone = telefone;
             Email = email;     
         }
-
-        private bool ValidarCpf (string cpf)
-        {
-            return Regex.IsMatch(cpf, @"^\d{3}\.\d{3}\.\d{3}-\d{2}$");
-        }
-
-        private bool ValidarTelefone(string telefone)
-        {
-            return Regex.IsMatch(telefone, @"^\(\d{2}\) \d{4,5}-\d{4}$");
-        }
-
-        private bool ValidarEmail(string email)
-        {
-            try
-            {
-                var addr = new System.Net.Mail.MailAddress(email);
-                return addr.Address == email;
-            }
-            catch
-            {
-                return false;
-            }
-
-            /*  private bool ValidarEmail(string email) 
-            {
-            return Regex.IsMatch(email, @"^[\w-]+(\.[\w-]+)*@([\w-]+\.)+[a-zA-Z]{2,7}$");
-            }*/
-        }   
     }
 }    
