@@ -7,6 +7,8 @@ namespace Biblioteca.Entidades
         public int Quantidade {get; set;} = int.MaxValue;
         public string Estado {get; set;} = string.Empty;
 
+        public Inventario() { }
+        
         public Inventario(int id, int livroId, int quantidade, string estado)
         {
             Id = id;
