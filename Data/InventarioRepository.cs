@@ -15,8 +15,9 @@ public class InventarioRepository : IInventarioRepository
     {
         const string query = @"
         INSERT INTO Inventario (LivroId, Quantidade, Estado)
-        VALUES (@LivroId, @Quantidade, @Estado);
-        SELECT LAST_INSERT_ID()";
+        VALUES (@LivroId, @Quantidade, @Estado)
+        ON DUPLICATE KEY UPDATE
+        Quantidade = Quantidade + @Quantidade, Estado = @Estado;";
 
         using var connection = new MySqlConnection(_connectionString);
         using var command = new MySqlCommand(query, connection);
@@ -26,21 +27,22 @@ public class InventarioRepository : IInventarioRepository
         command.Parameters.AddWithValue("@Estado", inventario.Estado);
 
         await connection.OpenAsync();
-        inventario.Id = Convert.ToInt32(await command.ExecuteScalarAsync());
+        await command.ExecuteNonQueryAsync();
+        
         return inventario;
     }
 
-    public async Task<Inventario> BuscarInventario(int id)
+    public async Task<Inventario> BuscarInventario(int livroId)
     {
         const string query = @"
         SELECT Id, LivroId, Quantidade, Estado
         FROM Inventario
-        WHERE Id = @Id";
+        WHERE LivroId = @LivroId";
 
         using var connection = new MySqlConnection(_connectionString);
         using var command = new MySqlCommand(query, connection);
 
-        command.Parameters.AddWithValue("@Id", id);
+        command.Parameters.AddWithValue("@LivroId", livroId);
 
         await connection.OpenAsync();
 
@@ -57,42 +59,6 @@ public class InventarioRepository : IInventarioRepository
         }
 
         return null;
-    }
-
-    public async Task<Inventario> AtualizarInventario(Inventario inventario)
-    {
-        const string query = @"
-        UPDATE Inventario
-        SET LivroId = @LivroId, Quantidade = @Quantidade, Estado = @Estado
-        WHERE Id = @Id";
-
-        using var connection = new MySqlConnection(_connectionString);
-        using var command = new MySqlCommand(query, connection);
-
-        command.Parameters.AddWithValue("@Id", inventario.Id);
-        command.Parameters.AddWithValue("@LivroId", inventario.LivroId);
-        command.Parameters.AddWithValue("@Quantidade", inventario.Quantidade);
-        command.Parameters.AddWithValue("@Estado", inventario.Estado);
-
-        await connection.OpenAsync();
-        var rowsAffected = await command.ExecuteNonQueryAsync();
-
-        return rowsAffected > 0 ? inventario : null;
-    }
-
-    public async Task<bool> DeletarInventario(int id)
-    {
-        const string query = @"DELETE FROM Inventario WHERE Id = @Id";
-
-        using var connection = new MySqlConnection(_connectionString);
-        using var command = new MySqlCommand(query, connection);
-
-        command.Parameters.AddWithValue("@Id", id);
-
-        await connection.OpenAsync();
-        var rowsAffected = await command.ExecuteNonQueryAsync();
-
-        return rowsAffected > 0; 
     }
 
     public async Task<IEnumerable<Inventario>> BuscarTodosInventarios()
@@ -122,4 +88,39 @@ public class InventarioRepository : IInventarioRepository
         return inventarios;
     }
 
+    public async Task<Inventario> AtualizarInventario(Inventario inventario)
+    {
+        const string query = @"
+        UPDATE Inventario
+        SET LivroId = @LivroId, Quantidade = @Quantidade, Estado = @Estado
+        WHERE Id = @Id";
+
+        using var connection = new MySqlConnection(_connectionString);
+        using var command = new MySqlCommand(query, connection);
+
+        command.Parameters.AddWithValue("@Id", inventario.Id);
+        command.Parameters.AddWithValue("@LivroId", inventario.LivroId);
+        command.Parameters.AddWithValue("@Quantidade", inventario.Quantidade);
+        command.Parameters.AddWithValue("@Estado", inventario.Estado);
+
+        await connection.OpenAsync();
+        var rowsAffected = await command.ExecuteNonQueryAsync();
+
+        return rowsAffected > 0 ? inventario : null;
+    }
+
+    public async Task<bool> DeletarInventario(int livroId)
+    {
+        const string query = @"DELETE FROM Inventario WHERE LivroId = @LivroId";
+
+        using var connection = new MySqlConnection(_connectionString);
+        using var command = new MySqlCommand(query, connection);
+
+        command.Parameters.AddWithValue("@LivroId", livroId);
+
+        await connection.OpenAsync();
+        var rowsAffected = await command.ExecuteNonQueryAsync();
+
+        return rowsAffected > 0; 
+    }
 }
