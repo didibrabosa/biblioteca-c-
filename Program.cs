@@ -146,19 +146,156 @@ class Program
 //         var sucesso = await usuarioService.DeletarUsuario(id);
 //         Console.WriteLine(sucesso ? "Usuário deletado com sucesso." : "Erro ao deletar usuário.");
 //     }
+    // static async Task Main(string[] args)
+    // {
+    //     var connectionString = "server=localhost;port=3307;database=app_db;user=app_user;password=user123;";
+    //     var livroRepository = new LivroRepository(connectionString);
+    //     var livroService = new LivroService(livroRepository);
+
+    //     while (true)
+    //     {
+    //         Console.WriteLine("1. Adicionar Livro");
+    //         Console.WriteLine("2. Buscar Livro por ID");
+    //         Console.WriteLine("3. Listar Todos os Livros");
+    //         Console.WriteLine("4. Atualizar Livro");
+    //         Console.WriteLine("5. Deletar Livro");
+    //         Console.WriteLine("0. Sair");
+    //         Console.Write("Escolha uma opção: ");
+
+    //         var opcao = Console.ReadLine();
+    //         switch (opcao)
+    //         {
+    //             case "1":
+    //                 await AdicionarLivro(livroService);
+    //                 continue;
+    //             case "2":
+    //                 await BuscarLivro(livroService);
+    //                 continue;
+    //             case "3":
+    //                 await BuscarTodosLivros(livroService);
+    //                 continue;
+    //             case "4":
+    //                 await AtualizarLivro(livroService);
+    //                 continue;
+    //             case "5":
+    //                 await DeletarLivro(livroService);
+    //                 continue;
+    //             case "0":
+    //                 return;
+    //             default:
+    //                 Console.WriteLine("Opção inválida.");
+    //                 continue;
+    //         }
+    //     }
+    // }
+
+    // static async Task AdicionarLivro(LivroService livroService)
+    // {
+    //     Console.Write("Título: ");
+    //     var titulo = Console.ReadLine();
+
+    //     Console.Write("Gênero: ");
+    //     var genero = Console.ReadLine();
+
+    //     Console.Write("Autor: ");
+    //     var autor = Console.ReadLine();
+
+    //     Console.Write("Número de Páginas: ");
+    //     var numeroDePaginas = int.Parse(Console.ReadLine());
+
+    //     Console.Write("Ano de Publicação: ");
+    //     var anoPublicacao = int.Parse(Console.ReadLine());
+
+    //     var livro = new Livro
+    //     {
+    //         Titulo = titulo,
+    //         Genero = genero,
+    //         Autor = autor,
+    //         NumeroDePaginas = numeroDePaginas,
+    //         AnoPublicacao = anoPublicacao
+    //     };
+
+    //     var resultado = await livroService.AdicionarLivro(livro);
+    //     Console.WriteLine($"Livro adicionado com ID: {resultado.Id}");
+    // }
+
+    // static async Task BuscarLivro(LivroService livroService)
+    // {
+    //     Console.Write("Digite o ID do livro: ");
+    //     var id = int.Parse(Console.ReadLine());
+    //     var livro = await livroService.BuscarLivro(id);
+
+    //     Console.WriteLine($"ID: {livro.Id}, Título: {livro.Titulo}, Gênero: {livro.Genero}, Autor: {livro.Autor}, Páginas: {livro.NumeroDePaginas}, Ano: {livro.AnoPublicacao}");
+    // }
+
+    // static async Task BuscarTodosLivros(LivroService livroService)
+    // {
+    //     var livros = await livroService.BuscarTodosLivros();
+
+    //     foreach (var livro in livros)
+    //     {
+    //         Console.WriteLine($"ID: {livro.Id}, Título: {livro.Titulo}, Gênero: {livro.Genero}, Autor: {livro.Autor}, Páginas: {livro.NumeroDePaginas}, Ano: {livro.AnoPublicacao}");
+    //     }
+    // }
+
+    // static async Task AtualizarLivro(LivroService livroService)
+    // {
+    //     Console.Write("Digite o ID do livro a ser atualizado: ");
+    //     var id = int.Parse(Console.ReadLine());
+
+    //     var livroExistente = await livroService.BuscarLivro(id);
+    //     if (livroExistente == null)
+    //     {
+    //         Console.WriteLine("Livro não encontrado.");
+    //         return;
+    //     }
+
+    //     Console.Write("Novo Título (deixe em branco para não alterar): ");
+    //     var titulo = Console.ReadLine();
+    //     if (!string.IsNullOrWhiteSpace(titulo)) livroExistente.Titulo = titulo;
+
+    //     Console.Write("Novo Gênero (deixe em branco para não alterar): ");
+    //     var genero = Console.ReadLine();
+    //     if (!string.IsNullOrWhiteSpace(genero)) livroExistente.Genero = genero;
+
+    //     Console.Write("Novo Autor (deixe em branco para não alterar): ");
+    //     var autor = Console.ReadLine();
+    //     if (!string.IsNullOrWhiteSpace(autor)) livroExistente.Autor = autor;
+
+    //     Console.Write("Novo Número de Páginas (deixe em branco para não alterar): ");
+    //     var paginas = Console.ReadLine();
+    //     if (!string.IsNullOrWhiteSpace(paginas)) livroExistente.NumeroDePaginas = int.Parse(paginas);
+
+    //     Console.Write("Novo Ano de Publicação (deixe em branco para não alterar): ");
+    //     var ano = Console.ReadLine();
+    //     if (!string.IsNullOrWhiteSpace(ano)) livroExistente.AnoPublicacao = int.Parse(ano);
+
+    //     await livroService.AtualizarLivro(livroExistente);
+    //     Console.WriteLine("Livro atualizado com sucesso.");
+    // }
+
+    // static async Task DeletarLivro(LivroService livroService)
+    // {
+    //     Console.Write("Digite o ID do livro a ser deletado: ");
+    //     var id = int.Parse(Console.ReadLine());
+
+    //     var sucesso = await livroService.DeletarLivro(id);
+    //     Console.WriteLine(sucesso ? "Livro deletado com sucesso" : "Erro ao deletar livro");
+    // }
+
     static async Task Main(string[] args)
     {
         var connectionString = "server=localhost;port=3307;database=app_db;user=app_user;password=user123;";
-        var livroRepository = new LivroRepository(connectionString);
-        var livroService = new LivroService(livroRepository);
+        var inventarioRepository = new InventarioRepository(connectionString);
+        var inventarioService = new InventarioService(inventarioRepository);
 
         while (true)
         {
-            Console.WriteLine("1. Adicionar Livro");
-            Console.WriteLine("2. Buscar Livro por ID");
-            Console.WriteLine("3. Listar Todos os Livros");
-            Console.WriteLine("4. Atualizar Livro");
-            Console.WriteLine("5. Deletar Livro");
+            Console.WriteLine("1. Adicionar Livro ao Inventário");
+            Console.WriteLine("2. Buscar Livro no Inventário");
+            Console.WriteLine("3. Buscar todos Livros no Inventário");
+            Console.WriteLine("4. Atualizar Livro do Inventário");
+            Console.WriteLine("5. Deletar Livro do Inventário");
             Console.WriteLine("0. Sair");
             Console.Write("Escolha uma opção: ");
 
@@ -166,19 +303,19 @@ class Program
             switch (opcao)
             {
                 case "1":
-                    await AdicionarLivro(livroService);
+                    await AdicionarInventario(inventarioService);
                     continue;
                 case "2":
-                    await BuscarLivro(livroService);
+                    await BuscarInventario(inventarioService);
                     continue;
                 case "3":
-                    await BuscarTodosLivros(livroService);
+                    await BuscarTodosInventarios(inventarioService);
                     continue;
                 case "4":
-                    await AtualizarLivro(livroService);
+                    await AtualizarInventario(inventarioService);
                     continue;
                 case "5":
-                    await DeletarLivro(livroService);
+                    await DeletarInventario(inventarioService);
                     continue;
                 case "0":
                     return;
@@ -189,98 +326,83 @@ class Program
         }
     }
 
-    static async Task AdicionarLivro(LivroService livroService)
+    static async Task AdicionarInventario(InventarioService inventarioService)
     {
-        Console.Write("Título: ");
-        var titulo = Console.ReadLine();
+        Console.Write("ID do Livro: ");
+        var livroId = int.Parse(Console.ReadLine());
 
-        Console.Write("Gênero: ");
-        var genero = Console.ReadLine();
+        Console.Write("Quantidade: ");
+        var quantidade = int.Parse(Console.ReadLine());
 
-        Console.Write("Autor: ");
-        var autor = Console.ReadLine();
+        Console.Write("Estado: ");
+        var estado = Console.ReadLine();
 
-        Console.Write("Número de Páginas: ");
-        var numeroDePaginas = int.Parse(Console.ReadLine());
-
-        Console.Write("Ano de Publicação: ");
-        var anoPublicacao = int.Parse(Console.ReadLine());
-
-        var livro = new Livro
+        var inventario = new Inventario
         {
-            Titulo = titulo,
-            Genero = genero,
-            Autor = autor,
-            NumeroDePaginas = numeroDePaginas,
-            AnoPublicacao = anoPublicacao
+            LivroId = livroId,
+            Quantidade = quantidade,
+            Estado = estado
         };
 
-        var resultado = await livroService.AdicionarLivro(livro);
-        Console.WriteLine($"Livro adicionado com ID: {resultado.Id}");
+        var resultado = await inventarioService.AdicionarInventario(inventario);
+        Console.WriteLine("Inventário adicionado com sucesso!");    
     }
 
-    static async Task BuscarLivro(LivroService livroService)
+    static async Task BuscarInventario(InventarioService inventarioService)
     {
-        Console.Write("Digite o ID do livro: ");
+        Console.Write("Digite o ID do Livro: ");
         var id = int.Parse(Console.ReadLine());
-        var livro = await livroService.BuscarLivro(id);
-
-        Console.WriteLine($"ID: {livro.Id}, Título: {livro.Titulo}, Gênero: {livro.Genero}, Autor: {livro.Autor}, Páginas: {livro.NumeroDePaginas}, Ano: {livro.AnoPublicacao}");
+        var inventario = await inventarioService.BuscarInventario(id);
+         
+        Console.WriteLine($"ID: {inventario.Id}");
+        Console.WriteLine($"ID do Livro: {inventario.LivroId}"); 
+        Console.WriteLine($"Quantidade: {inventario.Quantidade}");
+        Console.WriteLine($"Estado: {inventario.Estado}");
     }
 
-    static async Task BuscarTodosLivros(LivroService livroService)
+    static async Task<IEnumerable<Inventario>> BuscarTodosInventarios(InventarioService inventarioService)
     {
-        var livros = await livroService.BuscarTodosLivros();
+        var inventarios = await inventarioService.BuscarTodosInventarios();
 
-        foreach (var livro in livros)
+        foreach (var inventario in inventarios)
         {
-            Console.WriteLine($"ID: {livro.Id}, Título: {livro.Titulo}, Gênero: {livro.Genero}, Autor: {livro.Autor}, Páginas: {livro.NumeroDePaginas}, Ano: {livro.AnoPublicacao}");
-        }
-    }
-
-    static async Task AtualizarLivro(LivroService livroService)
-    {
-        Console.Write("Digite o ID do livro a ser atualizado: ");
-        var id = int.Parse(Console.ReadLine());
-
-        var livroExistente = await livroService.BuscarLivro(id);
-        if (livroExistente == null)
-        {
-            Console.WriteLine("Livro não encontrado.");
-            return;
+            Console.WriteLine($"ID: {inventario.Id}");
+            Console.WriteLine($"ID do Livro: {inventario.LivroId}");
+            Console.WriteLine($"Quantidade: {inventario.Quantidade}");
+            Console.WriteLine($"Estado: {inventario.Estado}");
         }
 
-        Console.Write("Novo Título (deixe em branco para não alterar): ");
-        var titulo = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(titulo)) livroExistente.Titulo = titulo;
-
-        Console.Write("Novo Gênero (deixe em branco para não alterar): ");
-        var genero = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(genero)) livroExistente.Genero = genero;
-
-        Console.Write("Novo Autor (deixe em branco para não alterar): ");
-        var autor = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(autor)) livroExistente.Autor = autor;
-
-        Console.Write("Novo Número de Páginas (deixe em branco para não alterar): ");
-        var paginas = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(paginas)) livroExistente.NumeroDePaginas = int.Parse(paginas);
-
-        Console.Write("Novo Ano de Publicação (deixe em branco para não alterar): ");
-        var ano = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(ano)) livroExistente.AnoPublicacao = int.Parse(ano);
-
-        await livroService.AtualizarLivro(livroExistente);
-        Console.WriteLine("Livro atualizado com sucesso.");
+        return (inventarios);
     }
 
-    static async Task DeletarLivro(LivroService livroService)
+    static async Task AtualizarInventario(InventarioService inventarioService)
     {
-        Console.Write("Digite o ID do livro a ser deletado: ");
+        Console.Write("ID do Livro: ");
         var id = int.Parse(Console.ReadLine());
 
-        var sucesso = await livroService.DeletarLivro(id);
-        Console.WriteLine(sucesso ? "Livro deletado com sucesso" : "Erro ao deletar livro");
+        Console.Write("Nova Quantidade: ");
+        var quantidade = int.Parse(Console.ReadLine());
+
+        Console.Write("Novo Estado: ");
+        var estado = Console.ReadLine();
+
+        var inventarioAtual = await inventarioService.BuscarInventario(id);
+
+        inventarioAtual.Quantidade = quantidade;
+        inventarioAtual.Estado = estado;
+
+        var resultado = await inventarioService.AtualizarInventario(inventarioAtual);
+
+        Console.WriteLine("Livro atualizado com sucesso!");
     }
+
+    static async Task DeletarInventario(InventarioService inventarioService)
+    {
+        Console.Write("ID do Livro: ");
+        var id = int.Parse(Console.ReadLine());
+
+        var resultado = await inventarioService.DeletarInventario(id);
+        Console.WriteLine("Item deletado com sucesso!");
+    } 
 
 }
