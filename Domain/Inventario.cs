@@ -14,16 +14,7 @@ namespace Biblioteca.Entidades
             Id = id;
             LivroId = livroId;
             Quantidade = quantidade;
-            Estado = estado;
-
-            if (livroId <= 0)
-                throw new ArgumentException("Livro do inventário não pode ser zero ou negativo.");
-
-            if (quantidade <= 0)
-                throw new ArgumentException("Quantidade do inventário não pode ser zero ou negativa.");
-
-            if (string.IsNullOrWhiteSpace(estado))
-                throw new ArgumentException("Estado do inventário não pode ser vazio.");     
+            Estado = estado;     
         }
     }
 }
