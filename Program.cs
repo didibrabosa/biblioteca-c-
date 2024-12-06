@@ -287,7 +287,8 @@ class Program
     {
         var connectionString = "server=localhost;port=3307;database=app_db;user=app_user;password=user123;";
         var inventarioRepository = new InventarioRepository(connectionString);
-        var inventarioService = new InventarioService(inventarioRepository);
+        var livroRepository = new LivroRepository(connectionString);
+        var inventarioService = new InventarioService(inventarioRepository, livroRepository);
 
         while (true)
         {
