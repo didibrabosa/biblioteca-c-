@@ -8,5 +8,5 @@ public interface ICatalogoRepository
     Task<Catalogo> AtualizarCatalogo(Catalogo catalogo);
     Task<bool> DeletarCatalogo(int id);
     Task AdicionarLivroCatalogo(int catalogoId, int livroId);
-    Task<bool> RemoverLivroDoCatalogo(int catalogoId, int livroId);
+    Task<bool> RemoverLivroCatalogo(int catalogoId, int livroId);
 }
