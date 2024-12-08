@@ -7,6 +7,8 @@ namespace Biblioteca.Entidades
         public string Genero {get; set;} = string.Empty;
         public List<Livro> Livros {get; set;}
 
+        public Catalogo() {}
+
         public Catalogo(int id, string nome, string genero)
         {
             Id = id;
