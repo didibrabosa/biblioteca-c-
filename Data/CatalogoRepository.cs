@@ -11,7 +11,7 @@ public class CatalogoRepository : ICatalogoRepository
         _connectionString = connectionString;
     }
 
-    public async Task<Catalogo> AdicionarCatalogo(Catalogo catalogo)
+    public async Task<Catalogo> AdicionarCatalogo(Catalogo catalogo, int livroId)
     {
         const string query = @"
         INSERT INTO Catalogos (Nome, Genero, LivroId)
@@ -23,6 +23,7 @@ public class CatalogoRepository : ICatalogoRepository
 
         command.Parameters.AddWithValue("@Nome", catalogo.Nome);
         command.Parameters.AddWithValue("@Genero", catalogo.Genero);
+        command.Parameters.AddWithValue("@LivroId", livroId);        
 
         await connection.OpenAsync();
         catalogo.Id = Convert.ToInt32(await command.ExecuteScalarAsync());
@@ -32,10 +33,10 @@ public class CatalogoRepository : ICatalogoRepository
     public async Task<Catalogo> BuscarCatalogo(int id)
     {
         const string query = @"
-        SELECT c.Id, c.Nome, c.Genero, l.Id as LivroId, l.Tutulo, l.Genero as LivroGenero, l.Autor, l.NumeroDePaginas, l.AnoPublicacao
+        SELECT c.Id, c.Nome, c.Genero, l.Id as LivroId, l.Titulo, l.Genero as LivroGenero, l.Autor, l.NumeroDePaginas, l.AnoPublicacao
         FROM Catalogos c
-        LEFT JOIN Catalogo_Livros cl On c.Id = cl.CatalogoId
-        LEFT JOIN Livros l ON cl.LivrosId - l.Id
+        LEFT JOIN Catalogo_Livros cl ON c.Id = cl.CatalogoId
+        LEFT JOIN Livros l ON cl.LivroId = l.Id
         WHERE c.Id = @Id";
 
         using var connection = new MySqlConnection(_connectionString);
@@ -142,7 +143,7 @@ public class CatalogoRepository : ICatalogoRepository
     public async Task AdicionarLivroCatalogo(int catalogoId, int livroId)
     {
         const string query = @"
-        INSERT INTO Catalogos_Livros (CatalogoId, LivroId)
+        INSERT INTO Catalogo_Livros (CatalogoId, LivroId)
         VALUES (@CatalogoId, @LivroId)";
 
         using var connection = new MySqlConnection(_connectionString);
