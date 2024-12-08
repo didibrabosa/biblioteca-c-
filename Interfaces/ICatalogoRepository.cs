@@ -2,7 +2,7 @@ using Biblioteca.Entidades;
 
 public interface ICatalogoRepository
 {
-    Task<Catalogo> AdicionarCatalogo(Catalogo catalogo);
+    Task<Catalogo> AdicionarCatalogo(Catalogo catalogo, int livroId);
     Task<Catalogo> BuscarCatalogo(int id);
     Task<IEnumerable<Catalogo>> BuscarTodosCatalogos();
     Task<Catalogo> AtualizarCatalogo(Catalogo catalogo);
