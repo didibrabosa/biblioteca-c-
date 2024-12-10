@@ -464,16 +464,13 @@ class Program
         Console.Write("Gênero do Catálogo: ");
         var genero = Console.ReadLine();
 
-        Console.Write("ID do Livro: ");
-        var livroId = int.Parse(Console.ReadLine());
-
         var catalogo = new Catalogo
         {
             Nome = nome,
             Genero = genero
         };
 
-        var resultado = await catalogoRepository.AdicionarCatalogo(catalogo, livroId);
+        var resultado = await catalogoRepository.AdicionarCatalogo(catalogo);
         Console.WriteLine($"Catálogo {resultado.Nome} adicionado com sucesso!");
     }
 
@@ -509,11 +506,20 @@ class Program
         Console.Write("Digite o ID do Catálogo a ser atualizado: ");
         var id = int.Parse(Console.ReadLine());
 
-        Console.Write("Novo Nome: ");
+        var catalogoExistente = await catalogoRepository.BuscarCatalogo(id);
+        if (catalogoExistente == null)
+        {
+            Console.WriteLine("Catálogo não encontrado.");
+            return;
+        }
+
+        Console.Write("Novo Nome(deixe em branco para não alterar): ");
         var nome = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(nome)) catalogoExistente.Nome = nome;
 
         Console.Write("Novo Gênero: ");
         var genero = Console.ReadLine();
+        if (!string.IsNullOrWhiteSpace(genero)) catalogoExistente.Genero = genero;
 
         var catalogo = new Catalogo
         {
@@ -522,7 +528,7 @@ class Program
             Genero = genero
         };
 
-        var resultado = await catalogoRepository.AtualizarCatalogo(catalogo);
+        var resultado = await catalogoRepository.AtualizarCatalogo(catalogoExistente);
         Console.WriteLine(resultado != null ? "Catálogo atualizado com sucesso!" : "Erro ao atualizar o Catálogo.");
     }
 
