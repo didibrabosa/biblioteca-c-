@@ -9,8 +9,8 @@ public class CatalogoService
         _catalogoRepository = catalogoRepository;
     }
 
-    public async Task<Catalogo> AdicionarCatalogo(Catalogo catalogo, int livroId)
-        => catalogo != null ? await _catalogoRepository.AdicionarCatalogo(catalogo, livroId) : null;
+    public async Task<Catalogo> AdicionarCatalogo(Catalogo catalogo)
+        => catalogo != null ? await _catalogoRepository.AdicionarCatalogo(catalogo) : null;
     
     public async Task<Catalogo> BuscarCatalogo(int id)
         => id > 0 ? await _catalogoRepository.BuscarCatalogo(id) : null;
