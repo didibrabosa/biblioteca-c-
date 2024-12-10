@@ -11,19 +11,18 @@ public class CatalogoRepository : ICatalogoRepository
         _connectionString = connectionString;
     }
 
-    public async Task<Catalogo> AdicionarCatalogo(Catalogo catalogo, int livroId)
+    public async Task<Catalogo> AdicionarCatalogo(Catalogo catalogo)
     {
         const string query = @"
-        INSERT INTO Catalogos (Nome, Genero, LivroId)
-        VALUES (@Nome, @Genero, @LivroId);
+        INSERT INTO Catalogos (Nome, Genero)
+        VALUES (@Nome, @Genero);
         SELECT LAST_INSERT_ID();";
 
         using var connection = new MySqlConnection(_connectionString);
         using var command = new MySqlCommand(query, connection);
 
         command.Parameters.AddWithValue("@Nome", catalogo.Nome);
-        command.Parameters.AddWithValue("@Genero", catalogo.Genero);
-        command.Parameters.AddWithValue("@LivroId", livroId);        
+        command.Parameters.AddWithValue("@Genero", catalogo.Genero);        
 
         await connection.OpenAsync();
         catalogo.Id = Convert.ToInt32(await command.ExecuteScalarAsync());
