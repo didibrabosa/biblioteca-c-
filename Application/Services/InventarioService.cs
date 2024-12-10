@@ -66,7 +66,12 @@ public class InventarioService
     }
 
     public async Task<bool> DeletarInventario(int id) 
-        => await _inventarioRepository.DeletarInventario(id);
+    {
+        if (id <= 0)
+            throw new ArgumentException("O ID do Livro deve ser maior que zero.");
+        
+        return await _inventarioRepository.DeletarInventario(id);
+    }
 
     private void ValidarInventario (Inventario inventario)
     {
