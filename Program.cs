@@ -410,6 +410,8 @@ class Program
     {
         var connectionString = "server=localhost;port=3307;database=app_db;user=app_user;password=user123";
         var catalogoRepository = new CatalogoRepository(connectionString);
+        var livroRepository = new LivroRepository(connectionString);
+        var catalogoService = new CatalogoService(catalogoRepository, livroRepository);
 
         while (true)
         {
@@ -427,25 +429,25 @@ class Program
             switch (opcao)
             {
                 case "1":
-                    await AdicionarCatalogo(catalogoRepository);
+                    await AdicionarCatalogo(catalogoService);
                     continue;
                 case "2":
-                    await BuscarCatalogo(catalogoRepository);
+                    await BuscarCatalogo(catalogoService);
                     continue;
                 case "3":
-                    await BuscarTodosCatalogos(catalogoRepository);
+                    await BuscarTodosCatalogos(catalogoService);
                     continue;
                 case "4":
-                    await AtualizarCatalogo(catalogoRepository);
+                    await AtualizarCatalogo(catalogoService);
                     continue;
                 case "5":
-                    await DeletarCatalogo(catalogoRepository);
+                    await DeletarCatalogo(catalogoService);
                     continue;
                 case "6":
-                    await AdicionarLivroCatalogo(catalogoRepository);
+                    await AdicionarLivroCatalogo(catalogoService);
                     continue;
                 case "7":
-                    await RemoverLivroCatalogo(catalogoRepository);
+                    await RemoverLivroCatalogo(catalogoService);
                     continue;
                 case "0":
                     return;
@@ -456,7 +458,7 @@ class Program
         }
     }
 
-    static async Task AdicionarCatalogo(CatalogoRepository catalogoRepository)
+    static async Task AdicionarCatalogo(CatalogoService catalogoService)
     {
         Console.Write("Nome do Catálogo: ");
         var nome = Console.ReadLine();
@@ -470,28 +472,29 @@ class Program
             Genero = genero
         };
 
-        var resultado = await catalogoRepository.AdicionarCatalogo(catalogo);
+        var resultado = await catalogoService.AdicionarCatalogo(catalogo);
         Console.WriteLine($"Catálogo {resultado.Nome} adicionado com sucesso!");
+        Console.WriteLine($"Catálogo criado com o ID {resultado.Id}");
     }
 
-    static async Task BuscarCatalogo(CatalogoRepository catalogoRepository)
+    static async Task BuscarCatalogo(CatalogoService catalogoService)
     {
         Console.Write("Digite o ID do Catálogo: ");
         var id = int.Parse(Console.ReadLine());
-        var catalogo = await catalogoRepository.BuscarCatalogo(id);
+        var catalogo = await catalogoService.BuscarCatalogo(id);
 
         Console.WriteLine($"ID: {catalogo.Id}");
         Console.WriteLine($"Nome: {catalogo.Nome}");
         Console.WriteLine($"Gênero: {catalogo.Genero}");
         foreach (var livro in catalogo.Livros)
         {
-            Console.WriteLine($"Livro ID: {livro.Id}, Título: {livro.Titulo}");
+            Console.WriteLine($"Livro ID: {livro.Id}, Título: {livro.Titulo}, Autor: {livro.Autor}");
         }
     }
 
-    static async Task BuscarTodosCatalogos(CatalogoRepository catalogoRepository)
+    static async Task BuscarTodosCatalogos(CatalogoService catalogoService)
     {
-        var catalogos = await catalogoRepository.BuscarTodosCatalogos();
+        var catalogos = await catalogoService.BuscarTodosCatalogos();
 
         foreach (var catalogo in catalogos)
         {
@@ -501,12 +504,12 @@ class Program
         }
     }
 
-    static async Task AtualizarCatalogo(CatalogoRepository catalogoRepository)
+    static async Task AtualizarCatalogo(CatalogoService catalogoService)
     {
         Console.Write("Digite o ID do Catálogo a ser atualizado: ");
         var id = int.Parse(Console.ReadLine());
 
-        var catalogoExistente = await catalogoRepository.BuscarCatalogo(id);
+        var catalogoExistente = await catalogoService.BuscarCatalogo(id);
         if (catalogoExistente == null)
         {
             Console.WriteLine("Catálogo não encontrado.");
@@ -521,27 +524,20 @@ class Program
         var genero = Console.ReadLine();
         if (!string.IsNullOrWhiteSpace(genero)) catalogoExistente.Genero = genero;
 
-        var catalogo = new Catalogo
-        {
-            Id = id,
-            Nome = nome,
-            Genero = genero
-        };
-
-        var resultado = await catalogoRepository.AtualizarCatalogo(catalogoExistente);
+        var resultado = await catalogoService.AtualizarCatalogo(catalogoExistente);
         Console.WriteLine(resultado != null ? "Catálogo atualizado com sucesso!" : "Erro ao atualizar o Catálogo.");
     }
 
-    static async Task DeletarCatalogo(CatalogoRepository catalogoRepository)
+    static async Task DeletarCatalogo(CatalogoService catalogoService)
     {
         Console.Write("Digite ID do Catálogo a ser deletado: ");
         var id = int.Parse(Console.ReadLine());
 
-        var resultado = await catalogoRepository.DeletarCatalogo(id);
+        var resultado = await catalogoService.DeletarCatalogo(id);
         Console.WriteLine(resultado ? "Catálogo deletado com sucesso" : "Erro ao deletar Catálogo.");
     }
 
-    static async Task AdicionarLivroCatalogo(CatalogoRepository catalogoRepository)
+    static async Task AdicionarLivroCatalogo(CatalogoService catalogoService)
     {
         Console.Write("ID do Catálogo: ");
         var catalogoId = int.Parse(Console.ReadLine());
@@ -549,11 +545,11 @@ class Program
         Console.Write("ID do Livro: ");
         var livroId = int.Parse(Console.ReadLine());
 
-        await catalogoRepository.AdicionarLivroCatalogo(catalogoId, livroId);
+        await catalogoService.AdicionarLivroCatalogo(catalogoId, livroId);
         Console.WriteLine("Livro adicionado ao Catálogo com sucesso!");
     }
 
-    static async Task RemoverLivroCatalogo(CatalogoRepository catalogoRepository)
+    static async Task RemoverLivroCatalogo(CatalogoService catalogoService)
     {
         Console.Write("ID do Catálogo: ");
         var catalogoId = int.Parse(Console.ReadLine());
@@ -561,7 +557,7 @@ class Program
         Console.Write("ID do Livro: ");
         var livroId = int.Parse(Console.ReadLine());
 
-        await catalogoRepository.RemoverLivroCatalogo(catalogoId, livroId);
+        await catalogoService.RemoverLivroCatalogo(catalogoId, livroId);
         Console.WriteLine("Livro removido do Catálogo com sucesso!");
     }
 }
