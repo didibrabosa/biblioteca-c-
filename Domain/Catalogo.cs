@@ -15,15 +15,6 @@ namespace Biblioteca.Entidades
             Nome = nome;
             Genero = genero;
             Livros = new List<Livro>();
-
-            // if (string.IsNullOrWhiteSpace(nome))
-            //     throw new ArgumentException("Nome do catálogo não pode ser vazio.");
-
-            // if (livroId <= 0)
-            //     throw new ArgumentException("Livro do catálogo não pode ser zero ou negativo.");
-
-            // if (string.IsNullOrWhiteSpace(genero))
-            //     throw new ArgumentException("Gênero do catálogo não pode ser vazio.");
         }
     }
 }    
