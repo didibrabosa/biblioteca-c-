@@ -14,10 +14,10 @@ public class InventarioRepository : IInventarioRepository
     public async Task<Inventario> AdicionarInventario(Inventario inventario)
     {
         const string query = @"
-        INSERT INTO Inventario (LivroId, Quantidade, Estado)
-        VALUES (@LivroId, @Quantidade, @Estado)
+        INSERT INTO Inventario (LivroId, Quantidade, Estado, Disponibilidade)
+        VALUES (@LivroId, @Quantidade, @Estado, @Disponibilidade)
         ON DUPLICATE KEY UPDATE
-        Quantidade = Quantidade + @Quantidade, Estado = @Estado;";
+        Quantidade = Quantidade + @Quantidade, Estado = @Estado, Disponibilidade = @Disponibilidade;";
 
         using var connection = new MySqlConnection(_connectionString);
         using var command = new MySqlCommand(query, connection);
@@ -25,6 +25,7 @@ public class InventarioRepository : IInventarioRepository
         command.Parameters.AddWithValue("@LivroId", inventario.LivroId);
         command.Parameters.AddWithValue("@Quantidade", inventario.Quantidade);
         command.Parameters.AddWithValue("@Estado", inventario.Estado);
+        command.Parameters.AddWithValue("@Disponibilidade", inventario.Disponibilidade);
 
         await connection.OpenAsync();
         await command.ExecuteNonQueryAsync();
@@ -35,7 +36,7 @@ public class InventarioRepository : IInventarioRepository
     public async Task<Inventario> BuscarInventario(int livroId)
     {
         const string query = @"
-        SELECT Id, LivroId, Quantidade, Estado
+        SELECT Id, LivroId, Quantidade, Estado, Disponibilidade
         FROM Inventario
         WHERE LivroId = @LivroId";
 
@@ -54,7 +55,8 @@ public class InventarioRepository : IInventarioRepository
                 reader.GetInt32("Id"),
                 reader.GetInt32("LivroId"),
                 reader.GetInt32("Quantidade"),
-                reader.GetString("Estado")
+                reader.GetString("Estado"),
+                reader.GetBoolean("Disponibilidade")
             );
         }
 
@@ -64,7 +66,7 @@ public class InventarioRepository : IInventarioRepository
     public async Task<IEnumerable<Inventario>> BuscarTodosInventarios()
     {
         const string query = @"
-        SELECT Id, LivroId, Quantidade, Estado
+        SELECT Id, LivroId, Quantidade, Estado, Disponibilidade
         FROM Inventario";
 
         var inventarios = new List<Inventario>();
@@ -81,7 +83,8 @@ public class InventarioRepository : IInventarioRepository
                 reader.GetInt32("Id"),
                 reader.GetInt32("LivroId"),
                 reader.GetInt32("Quantidade"),
-                reader.GetString("Estado")
+                reader.GetString("Estado"),
+                reader.GetBoolean("Disponibilidade")
             ));
         }
 
@@ -92,7 +95,7 @@ public class InventarioRepository : IInventarioRepository
     {
         const string query = @"
         UPDATE Inventario
-        SET LivroId = @LivroId, Quantidade = @Quantidade, Estado = @Estado
+        SET LivroId = @LivroId, Quantidade = @Quantidade, Estado = @Estado, Disponibilidade = @Disponibilidade
         WHERE Id = @Id";
 
         using var connection = new MySqlConnection(_connectionString);
@@ -102,6 +105,7 @@ public class InventarioRepository : IInventarioRepository
         command.Parameters.AddWithValue("@LivroId", inventario.LivroId);
         command.Parameters.AddWithValue("@Quantidade", inventario.Quantidade);
         command.Parameters.AddWithValue("@Estado", inventario.Estado);
+        command.Parameters.AddWithValue("@Disponibilidade", inventario.Disponibilidade);
 
         await connection.OpenAsync();
         var rowsAffected = await command.ExecuteNonQueryAsync();
