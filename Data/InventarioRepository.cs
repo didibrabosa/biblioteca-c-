@@ -33,17 +33,17 @@ public class InventarioRepository : IInventarioRepository
         return inventario;
     }
 
-    public async Task<Inventario> BuscarInventario(int livroId)
+    public async Task<Inventario> BuscarInventario(int id)
     {
         const string query = @"
         SELECT Id, LivroId, Quantidade, Estado, Disponibilidade
         FROM Inventario
-        WHERE LivroId = @LivroId";
+        WHERE Id = @Id";
 
         using var connection = new MySqlConnection(_connectionString);
         using var command = new MySqlCommand(query, connection);
 
-        command.Parameters.AddWithValue("@LivroId", livroId);
+        command.Parameters.AddWithValue("@Id",id);
 
         await connection.OpenAsync();
 
@@ -113,14 +113,14 @@ public class InventarioRepository : IInventarioRepository
         return rowsAffected > 0 ? inventario : null;
     }
 
-    public async Task<bool> DeletarInventario(int livroId)
+    public async Task<bool> DeletarInventario(int id)
     {
-        const string query = @"DELETE FROM Inventario WHERE LivroId = @LivroId";
+        const string query = @"DELETE FROM Inventario WHERE Id = @Id";
 
         using var connection = new MySqlConnection(_connectionString);
         using var command = new MySqlCommand(query, connection);
 
-        command.Parameters.AddWithValue("@LivroId", livroId);
+        command.Parameters.AddWithValue("@Id", id);
 
         await connection.OpenAsync();
         var rowsAffected = await command.ExecuteNonQueryAsync();
