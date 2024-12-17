@@ -9,6 +9,7 @@ namespace Biblioteca.Entidades
         public DateTime DataDevolucao {get; set;} = DateTime.MinValue;
         public string Status {get; set;} = string.Empty;
         
+        public Emprestimo() {}
 
         public Emprestimo(int id, int inventarioId, int usuarioId, DateTime dataEmprestimo, DateTime dataDevolucao, string status)
         {
@@ -18,21 +19,6 @@ namespace Biblioteca.Entidades
             DataEmprestimo = dataEmprestimo;
             DataDevolucao = dataDevolucao;
             Status = status;
-
-            if (inventarioId <= 0)
-                throw new ArgumentException("Livro do empréstimo não pode ser zero ou negativo.");
-
-            if (usuarioId <= 0)
-                throw new ArgumentException("Usuário do empréstimo não pode ser zero ou negativo.");
-
-            if (dataEmprestimo == DateTime.MinValue)
-                throw new ArgumentException("Data de empréstimo do empréstimo não pode ser vazia.");
-
-            if (dataDevolucao == DateTime.MinValue)
-                throw new ArgumentException("Data de devolução do empréstimo não pode ser vazia.");
-            
-            if (string.IsNullOrWhiteSpace(status))
-                throw new ArgumentException("Status do empréstimo não pode ser vazio.");
         }
     }
 }
