@@ -406,22 +406,177 @@ class Program
 //         Console.WriteLine("Item deletado com sucesso!");
 //     } 
 
-    static async Task Main(string[] args)
+//     static async Task Main(string[] args)
+//     {
+//         var connectionString = "server=localhost;port=3307;database=app_db;user=app_user;password=user123";
+//         var catalogoRepository = new CatalogoRepository(connectionString);
+//         var livroRepository = new LivroRepository(connectionString);
+//         var catalogoService = new CatalogoService(catalogoRepository, livroRepository);
+
+//         while (true)
+//         {
+//             Console.WriteLine("1. Adicionar Catalogo");
+//             Console.WriteLine("2. Buscar Catalogo");
+//             Console.WriteLine("3. Buscar todos Catalogos");
+//             Console.WriteLine("4. Atualizar Catalogo");
+//             Console.WriteLine("5. Deletar Catalogo");
+//             Console.WriteLine("6. Adicionar Livro ao Catalogo");
+//             Console.WriteLine("7. Remover Livro do Catalogo");
+//             Console.WriteLine("0. Sair");
+//             Console.Write("Escolha uma opção: ");
+
+//             var opcao = Console.ReadLine();
+//             switch (opcao)
+//             {
+//                 case "1":
+//                     await AdicionarCatalogo(catalogoService);
+//                     continue;
+//                 case "2":
+//                     await BuscarCatalogo(catalogoService);
+//                     continue;
+//                 case "3":
+//                     await BuscarTodosCatalogos(catalogoService);
+//                     continue;
+//                 case "4":
+//                     await AtualizarCatalogo(catalogoService);
+//                     continue;
+//                 case "5":
+//                     await DeletarCatalogo(catalogoService);
+//                     continue;
+//                 case "6":
+//                     await AdicionarLivroCatalogo(catalogoService);
+//                     continue;
+//                 case "7":
+//                     await RemoverLivroCatalogo(catalogoService);
+//                     continue;
+//                 case "0":
+//                     return;
+//                 default:
+//                     Console.WriteLine("Opção inválida.");
+//                     continue;    
+//             }
+//         }
+//     }
+
+//     static async Task AdicionarCatalogo(CatalogoService catalogoService)
+//     {
+//         Console.Write("Nome do Catálogo: ");
+//         var nome = Console.ReadLine();
+
+//         Console.Write("Gênero do Catálogo: ");
+//         var genero = Console.ReadLine();
+
+//         var catalogo = new Catalogo
+//         {
+//             Nome = nome,
+//             Genero = genero
+//         };
+
+//         var resultado = await catalogoService.AdicionarCatalogo(catalogo);
+//         Console.WriteLine($"Catálogo {resultado.Nome} adicionado com sucesso!");
+//         Console.WriteLine($"Catálogo criado com o ID {resultado.Id}");
+//     }
+
+//     static async Task BuscarCatalogo(CatalogoService catalogoService)
+//     {
+//         Console.Write("Digite o ID do Catálogo: ");
+//         var id = int.Parse(Console.ReadLine());
+//         var catalogo = await catalogoService.BuscarCatalogo(id);
+
+//         Console.WriteLine($"ID: {catalogo.Id}");
+//         Console.WriteLine($"Nome: {catalogo.Nome}");
+//         Console.WriteLine($"Gênero: {catalogo.Genero}");
+//         foreach (var livro in catalogo.Livros)
+//         {
+//             Console.WriteLine($"Livro ID: {livro.Id}, Título: {livro.Titulo}, Autor: {livro.Autor}");
+//         }
+//     }
+
+//     static async Task BuscarTodosCatalogos(CatalogoService catalogoService)
+//     {
+//         var catalogos = await catalogoService.BuscarTodosCatalogos();
+
+//         foreach (var catalogo in catalogos)
+//         {
+//             Console.WriteLine($"ID: {catalogo.Id}");
+//             Console.WriteLine($"Nome: {catalogo.Nome}");
+//             Console.WriteLine($"Gênero: {catalogo.Genero}");
+//         }
+//     }
+
+//     static async Task AtualizarCatalogo(CatalogoService catalogoService)
+//     {
+//         Console.Write("Digite o ID do Catálogo a ser atualizado: ");
+//         var id = int.Parse(Console.ReadLine());
+
+//         var catalogoExistente = await catalogoService.BuscarCatalogo(id);
+//         if (catalogoExistente == null)
+//         {
+//             Console.WriteLine("Catálogo não encontrado.");
+//             return;
+//         }
+
+//         Console.Write("Novo Nome(deixe em branco para não alterar): ");
+//         var nome = Console.ReadLine();
+//         if (!string.IsNullOrWhiteSpace(nome)) catalogoExistente.Nome = nome;
+
+//         Console.Write("Novo Gênero: ");
+//         var genero = Console.ReadLine();
+//         if (!string.IsNullOrWhiteSpace(genero)) catalogoExistente.Genero = genero;
+
+//         var resultado = await catalogoService.AtualizarCatalogo(catalogoExistente);
+//         Console.WriteLine(resultado != null ? "Catálogo atualizado com sucesso!" : "Erro ao atualizar o Catálogo.");
+//     }
+
+//     static async Task DeletarCatalogo(CatalogoService catalogoService)
+//     {
+//         Console.Write("Digite ID do Catálogo a ser deletado: ");
+//         var id = int.Parse(Console.ReadLine());
+
+//         var resultado = await catalogoService.DeletarCatalogo(id);
+//         Console.WriteLine(resultado ? "Catálogo deletado com sucesso" : "Erro ao deletar Catálogo.");
+//     }
+
+//     static async Task AdicionarLivroCatalogo(CatalogoService catalogoService)
+//     {
+//         Console.Write("ID do Catálogo: ");
+//         var catalogoId = int.Parse(Console.ReadLine());
+
+//         Console.Write("ID do Livro: ");
+//         var livroId = int.Parse(Console.ReadLine());
+
+//         await catalogoService.AdicionarLivroCatalogo(catalogoId, livroId);
+//         Console.WriteLine("Livro adicionado ao Catálogo com sucesso!");
+//     }
+
+//     static async Task RemoverLivroCatalogo(CatalogoService catalogoService)
+//     {
+//         Console.Write("ID do Catálogo: ");
+//         var catalogoId = int.Parse(Console.ReadLine());
+
+//         Console.Write("ID do Livro: ");
+//         var livroId = int.Parse(Console.ReadLine());
+
+//         await catalogoService.RemoverLivroCatalogo(catalogoId, livroId);
+//         Console.WriteLine("Livro removido do Catálogo com sucesso!");
+//     }
+// }
+
+    static async Task Main(string [] args)
     {
         var connectionString = "server=localhost;port=3307;database=app_db;user=app_user;password=user123";
-        var catalogoRepository = new CatalogoRepository(connectionString);
-        var livroRepository = new LivroRepository(connectionString);
-        var catalogoService = new CatalogoService(catalogoRepository, livroRepository);
+        var emprestimoRepository = new EmprestimoRepository(connectionString);
+        var inventarioRepository = new InventarioRepository(connectionString);
+        var usuarioRepository = new UsuarioRepository(connectionString);
+        var emprestimoService = new EmprestimoService(emprestimoRepository, inventarioRepository, usuarioRepository);
 
-        while (true)
+        while(true)
         {
-            Console.WriteLine("1. Adicionar Catalogo");
-            Console.WriteLine("2. Buscar Catalogo");
-            Console.WriteLine("3. Buscar todos Catalogos");
-            Console.WriteLine("4. Atualizar Catalogo");
-            Console.WriteLine("5. Deletar Catalogo");
-            Console.WriteLine("6. Adicionar Livro ao Catalogo");
-            Console.WriteLine("7. Remover Livro do Catalogo");
+            Console.WriteLine("1. Adicionar Empréstimo");
+            Console.WriteLine("2. Buscar Empréstimo por ID");
+            Console.WriteLine("3. Buscar Todos os Empréstimos");
+            Console.WriteLine("4. Atualizar Status de Empréstimo");
+            Console.WriteLine("5. Deletar Empréstimo");
             Console.WriteLine("0. Sair");
             Console.Write("Escolha uma opção: ");
 
@@ -429,136 +584,91 @@ class Program
             switch (opcao)
             {
                 case "1":
-                    await AdicionarCatalogo(catalogoService);
+                    await AdicionarEmprestimo(emprestimoService);
                     continue;
                 case "2":
-                    await BuscarCatalogo(catalogoService);
+                    await BuscarEmprestimo(emprestimoService);
                     continue;
                 case "3":
-                    await BuscarTodosCatalogos(catalogoService);
+                    await BuscarTodosEmprestimos(emprestimoService);
                     continue;
                 case "4":
-                    await AtualizarCatalogo(catalogoService);
+                    await AtualizarEmprestimo(emprestimoService);
                     continue;
                 case "5":
-                    await DeletarCatalogo(catalogoService);
-                    continue;
-                case "6":
-                    await AdicionarLivroCatalogo(catalogoService);
-                    continue;
-                case "7":
-                    await RemoverLivroCatalogo(catalogoService);
+                    await DeletarEmprestimo(emprestimoService);
                     continue;
                 case "0":
                     return;
                 default:
                     Console.WriteLine("Opção inválida.");
-                    continue;    
+                    break;
             }
         }
     }
 
-    static async Task AdicionarCatalogo(CatalogoService catalogoService)
+    static async Task AdicionarEmprestimo(EmprestimoService emprestimoService)
     {
-        Console.Write("Nome do Catálogo: ");
-        var nome = Console.ReadLine();
+        Console.Write("ID do Usuário: ");
+        var usuarioId = int.Parse(Console.ReadLine());
 
-        Console.Write("Gênero do Catálogo: ");
-        var genero = Console.ReadLine();
+        Console.Write("ID do Inventário: ");
+        var inventarioId = int.Parse(Console.ReadLine());
 
-        var catalogo = new Catalogo
+        var emprestimo = new Emprestimo
         {
-            Nome = nome,
-            Genero = genero
+            UsuarioId = usuarioId,
+            InventarioId = inventarioId
         };
-
-        var resultado = await catalogoService.AdicionarCatalogo(catalogo);
-        Console.WriteLine($"Catálogo {resultado.Nome} adicionado com sucesso!");
-        Console.WriteLine($"Catálogo criado com o ID {resultado.Id}");
+        
+        var novoEmprestimo = await emprestimoService.AdicionarEmprestimo(emprestimo);
+        Console.WriteLine($"Empréstimo realizado com sucesso! ID: {novoEmprestimo.Id}");
     }
 
-    static async Task BuscarCatalogo(CatalogoService catalogoService)
+    static async Task BuscarEmprestimo(EmprestimoService emprestimoService)
     {
-        Console.Write("Digite o ID do Catálogo: ");
-        var id = int.Parse(Console.ReadLine());
-        var catalogo = await catalogoService.BuscarCatalogo(id);
+        Console.WriteLine("Digite o ID do Empréstimo: ");
+        var emprestimoId = int.Parse(Console.ReadLine());
 
-        Console.WriteLine($"ID: {catalogo.Id}");
-        Console.WriteLine($"Nome: {catalogo.Nome}");
-        Console.WriteLine($"Gênero: {catalogo.Genero}");
-        foreach (var livro in catalogo.Livros)
+        var emprestimo = await emprestimoService.BuscarEmprestimo(emprestimoId);
+        if (emprestimo != null)
         {
-            Console.WriteLine($"Livro ID: {livro.Id}, Título: {livro.Titulo}, Autor: {livro.Autor}");
+            Console.WriteLine($"ID: {emprestimo.Id}, Usuário: {emprestimo.UsuarioId}, Livro: {emprestimo.InventarioId}, Status: {emprestimo.Status}");
+        }
+        else
+        {
+            Console.WriteLine("Empréstimo não encontrado.");
         }
     }
 
-    static async Task BuscarTodosCatalogos(CatalogoService catalogoService)
+    static async Task BuscarTodosEmprestimos(EmprestimoService emprestimoService)
     {
-        var catalogos = await catalogoService.BuscarTodosCatalogos();
-
-        foreach (var catalogo in catalogos)
+        var emprestimos = await emprestimoService.BuscarTodosEmprestimos();
+        foreach (var emprestimo in emprestimos)
         {
-            Console.WriteLine($"ID: {catalogo.Id}");
-            Console.WriteLine($"Nome: {catalogo.Nome}");
-            Console.WriteLine($"Gênero: {catalogo.Genero}");
+            Console.WriteLine($"ID: {emprestimo.Id}, Usuário: {emprestimo.UsuarioId}, Livro: {emprestimo.InventarioId}, Status: {emprestimo.Status}");
         }
     }
 
-    static async Task AtualizarCatalogo(CatalogoService catalogoService)
+    static async Task AtualizarEmprestimo(EmprestimoService emprestimoService)
     {
-        Console.Write("Digite o ID do Catálogo a ser atualizado: ");
-        var id = int.Parse(Console.ReadLine());
+        Console.Write("Digite o ID do Empréstimo: ");
+        var emprestimoId = int.Parse(Console.ReadLine());
 
-        var catalogoExistente = await catalogoService.BuscarCatalogo(id);
-        if (catalogoExistente == null)
-        {
-            Console.WriteLine("Catálogo não encontrado.");
-            return;
-        }
+        Console.Write("Novo Status (Pendente/Atrasado/Devolvido): ");
+        var novoStatus = Console.ReadLine();
 
-        Console.Write("Novo Nome(deixe em branco para não alterar): ");
-        var nome = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(nome)) catalogoExistente.Nome = nome;
-
-        Console.Write("Novo Gênero: ");
-        var genero = Console.ReadLine();
-        if (!string.IsNullOrWhiteSpace(genero)) catalogoExistente.Genero = genero;
-
-        var resultado = await catalogoService.AtualizarCatalogo(catalogoExistente);
-        Console.WriteLine(resultado != null ? "Catálogo atualizado com sucesso!" : "Erro ao atualizar o Catálogo.");
+        var emprestimoAtualizado = await emprestimoService.AtualizarEmprestimo(emprestimoId, novoStatus);
+        Console.WriteLine("Status do empréstimo atualizado com sucesso!");
     }
 
-    static async Task DeletarCatalogo(CatalogoService catalogoService)
+    static async Task DeletarEmprestimo(EmprestimoService emprestimoService)
     {
-        Console.Write("Digite ID do Catálogo a ser deletado: ");
-        var id = int.Parse(Console.ReadLine());
+        Console.Write("Digite o ID Empréstimo a ser deletado: ");
+        var emprestimoId = int.Parse(Console.ReadLine());
 
-        var resultado = await catalogoService.DeletarCatalogo(id);
-        Console.WriteLine(resultado ? "Catálogo deletado com sucesso" : "Erro ao deletar Catálogo.");
+        var sucesso = await emprestimoService.DeletarEmprestimo(emprestimoId);
+        Console.WriteLine(sucesso ? "Empréstimo deletado com sucesso!" : "Erro ao deletar o empŕestimo.");
     }
 
-    static async Task AdicionarLivroCatalogo(CatalogoService catalogoService)
-    {
-        Console.Write("ID do Catálogo: ");
-        var catalogoId = int.Parse(Console.ReadLine());
-
-        Console.Write("ID do Livro: ");
-        var livroId = int.Parse(Console.ReadLine());
-
-        await catalogoService.AdicionarLivroCatalogo(catalogoId, livroId);
-        Console.WriteLine("Livro adicionado ao Catálogo com sucesso!");
-    }
-
-    static async Task RemoverLivroCatalogo(CatalogoService catalogoService)
-    {
-        Console.Write("ID do Catálogo: ");
-        var catalogoId = int.Parse(Console.ReadLine());
-
-        Console.Write("ID do Livro: ");
-        var livroId = int.Parse(Console.ReadLine());
-
-        await catalogoService.RemoverLivroCatalogo(catalogoId, livroId);
-        Console.WriteLine("Livro removido do Catálogo com sucesso!");
-    }
 }
-
