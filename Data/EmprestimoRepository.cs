@@ -3,11 +3,11 @@ using Biblioteca.Entidades;
 using MySql.Data.MySqlClient;
 
 
-public class EmprestimoRepostory : IEmprestimoRepository
+public class EmprestimoRepository : IEmprestimoRepository
 {
     private readonly string _connectionString;
 
-    public EmprestimoRepostory(string connectionString)
+    public EmprestimoRepository(string connectionString)
     {
         _connectionString = connectionString;
     }
@@ -20,11 +20,11 @@ public class EmprestimoRepostory : IEmprestimoRepository
 
         using var connection = new MySqlConnection(_connectionString);
         using var command = new MySqlCommand(query, connection);
-
-        command.Parameters.AddWithValue("@InventarioId", emprestimo.InventarioId);
+        
+        command.Parameters.AddWithValue("@InventarioId", emprestimo.InventarioId);            
         command.Parameters.AddWithValue("@UsuarioId", emprestimo.UsuarioId);
         command.Parameters.AddWithValue("@DataEmprestimo", emprestimo.DataEmprestimo);
-        command.Parameters.AddWithValue("@DataDevolucao", emprestimo.DataDevolucao == DateTime.MinValue ? DBNull.Value : emprestimo.DataDevolucao); 
+        command.Parameters.AddWithValue("@DataDevolucao", emprestimo.DataDevolucao == DateTime.MinValue ? DBNull.Value : emprestimo.DataDevolucao);             
         command.Parameters.AddWithValue("@Status", emprestimo.Status);
 
         await connection.OpenAsync();
@@ -37,8 +37,8 @@ public class EmprestimoRepostory : IEmprestimoRepository
     public async Task<Emprestimo> BuscarEmprestimo(int id)
     {
         const string query = @"
-        SELECT Id, InventarioId, UsuarioId, DataEprestimo, DataDevolucao, Status
-        FROM Emprestimos
+        SELECT Id, InventarioId, UsuarioId, DataEmprestimo, DataDevolucao, Status
+        FROM Emprestimo
         WHERE Id = @Id";
 
         using var connection = new MySqlConnection(_connectionString);
@@ -96,11 +96,11 @@ public class EmprestimoRepostory : IEmprestimoRepository
     public async Task<Emprestimo> AtualizarEmprestimo(Emprestimo emprestimo)
     {
         const string query = @"
-        UPDATE Emprestimos
+        UPDATE Emprestimo   
         SET InventarioId = @InventarioId,
         UsuarioId = @UsuarioId,
-        DataEmprestimo = @DataEmprestimo
-        DataDevolucao = @DataDevolucao
+        DataEmprestimo = @DataEmprestimo,
+        DataDevolucao = @DataDevolucao,
         Status = @Status
         WHERE Id = @Id";
 
@@ -110,7 +110,7 @@ public class EmprestimoRepostory : IEmprestimoRepository
         command.Parameters.AddWithValue("@Id", emprestimo.Id);
         command.Parameters.AddWithValue("@InventarioId", emprestimo.InventarioId);
         command.Parameters.AddWithValue("@UsuarioId", emprestimo.UsuarioId);
-        command.Parameters.AddWithValue("@DataEmprestimo", emprestimo.UsuarioId);
+        command.Parameters.AddWithValue("@DataEmprestimo", emprestimo.DataEmprestimo);
         command.Parameters.AddWithValue("@DataDevolucao", emprestimo.DataDevolucao);
         command.Parameters.AddWithValue("@Status", emprestimo.Status);
 
