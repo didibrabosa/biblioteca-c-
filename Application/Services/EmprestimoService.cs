@@ -13,29 +13,27 @@ public class EmprestimoService
         _usuarioRepository = usuarioRepository;
     }
 
-    public async Task<Emprestimo> CriarEmprestimo(Emprestimo emprestimo)
+    public async Task<Emprestimo> AdicionarEmprestimo(Emprestimo emprestimo)
     {
-        var inventario = await _inventarioRepository.BuscarInventario(emprestimo.InventarioId);
-        if (inventario == null)
-            throw new ArgumentException("Livro não encontrado no Inventário.");
-
-        if (!inventario.Disponibilidade)
-            throw new InvalidOperationException("O Livro não está disponível para Empréstimo.");
-
         var usuario = await _usuarioRepository.BuscarUsuario(emprestimo.UsuarioId);
         if (usuario == null)
             throw new ArgumentException("Usuário não encontrado.");
 
+        var inventario = await _inventarioRepository.BuscarInventario(emprestimo.InventarioId);
+        if (inventario == null)
+            throw new ArgumentException("Livro não encontrado no Inventário.");
+
+        if (inventario.Quantidade <= 0)
+            throw new InvalidOperationException("Não há livros disponíveis para empréstimo.");
+        
         emprestimo.Status = "Pendente";
         emprestimo.DataEmprestimo = DateTime.Now;
-        var novoEmprestimo = await _emprestimoRepository.AdicionarEmprestimo(emprestimo);
 
         inventario.Quantidade -= 1;
-
         inventario.Disponibilidade = inventario.Quantidade > 0;
         await _inventarioRepository.AtualizarInventario(inventario);
 
-        return novoEmprestimo;
+        return await _emprestimoRepository.AdicionarEmprestimo(emprestimo);
     }
 
     public async Task<Emprestimo> BuscarEmprestimo(int id)
@@ -73,6 +71,18 @@ public class EmprestimoService
         if (emprestimo == null)
             throw new ArgumentException("Empréstimo não encontrado.");
 
-        return await _emprestimoRepository.DeletarEmprestimo(id);
+        var sucesso = await _emprestimoRepository.DeletarEmprestimo(id);
+
+        if (sucesso)
+        {
+            var inventario = await _inventarioRepository.BuscarInventario(emprestimo.InventarioId);
+            if(inventario != null)
+            {
+                inventario.Quantidade += 1;
+                await _inventarioRepository.AtualizarInventario(inventario);
+            }
+        }
+
+        return sucesso;
     } 
 }
