@@ -615,10 +615,18 @@ class Program
         Console.Write("ID do Inventário: ");
         var inventarioId = int.Parse(Console.ReadLine());
 
+        Console.Write("Data de Devolução (yyyy-MM-dd HH:mm:ss): ");
+        if (!DateTime.TryParse(Console.ReadLine(), out DateTime dataDevolucao))
+        {
+            Console.WriteLine("Data inválida. Certifique-se de usar o formato correto.");
+            return;
+        }
+
         var emprestimo = new Emprestimo
         {
             UsuarioId = usuarioId,
-            InventarioId = inventarioId
+            InventarioId = inventarioId,
+            DataDevolucao = dataDevolucao
         };
         
         var novoEmprestimo = await emprestimoService.AdicionarEmprestimo(emprestimo);
