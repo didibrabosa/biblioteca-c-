@@ -13,8 +13,6 @@ public class InventarioService
 
     public async Task<Inventario> AdicionarInventario(Inventario inventario) 
     {
-        var livro = await _livroRepository.BuscarLivro(inventario.LivroId);
-
         await ValidarLivro(inventario);
         
         ValidarInventario(inventario);
@@ -22,14 +20,14 @@ public class InventarioService
 
         return inventario;
     }
-    public async Task<Inventario> BuscarInventario(int livroId) 
+    public async Task<Inventario> BuscarInventario(int id) 
     {
-        if (livroId <= 0)
+        if (id <= 0)
             throw new ArgumentException("O ID deve ser maior que zero.");
 
-        var inventario = await _inventarioRepository.BuscarInventario(livroId);
+        var inventario = await _inventarioRepository.BuscarInventario(id);
         if (inventario == null)
-            throw new KeyNotFoundException("Livro não encotrado.");
+            throw new KeyNotFoundException("Inventário não encotrado.");
 
         return inventario;
     }
@@ -48,8 +46,6 @@ public class InventarioService
 
     public async Task<Inventario> AtualizarInventario(Inventario inventario) 
     {
-        var livro = await _livroRepository.BuscarLivro(inventario.LivroId);
-
         await ValidarLivro(inventario);
         
         ValidarInventario(inventario);
@@ -68,7 +64,7 @@ public class InventarioService
     public async Task<bool> DeletarInventario(int id) 
     {
         if (id <= 0)
-            throw new ArgumentException("O ID do Livro deve ser maior que zero.");
+            throw new ArgumentException("O ID do Inventário deve ser maior que zero.");
         
         return await _inventarioRepository.DeletarInventario(id);
     }

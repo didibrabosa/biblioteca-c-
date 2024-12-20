@@ -19,25 +19,25 @@ public class UsuarioService
 
     public async Task<Usuario> BuscarUsuario(int id)
     {
-         if (id <= 0)
-             throw new ArgumentException("O ID do Usuário deve ser maior que zero");
+        if (id <= 0)
+            throw new ArgumentException("O ID do Usuário deve ser maior que zero");
 
-             var usuario = await _usuarioRepository.BuscarUsuario(id);
+            var usuario = await _usuarioRepository.BuscarUsuario(id);
 
-             if (usuario == null)
-                 throw new KeyNotFoundException($"Usuário com ID {id} não encontrado."); 
+            if (usuario == null)
+                throw new KeyNotFoundException($"Usuário com ID {id} não encontrado."); 
             
-             return usuario;
+            return usuario;
     }
 
     public async Task<IEnumerable<Usuario>> BuscarTodosUsuarios() 
     {
-         var usuarios = await _usuarioRepository.BuscarTodosUsuarios();
+        var usuarios = await _usuarioRepository.BuscarTodosUsuarios();
 
-         if (usuarios == null || !usuarios.Any())
-             throw new KeyNotFoundException("Nenhum usuário encotrado.");
+        if (usuarios == null || !usuarios.Any())
+            throw new KeyNotFoundException("Nenhum usuário encotrado.");
 
-         return usuarios;  
+        return usuarios;  
     }
 
     public async Task<Usuario> AtualizarUsuario(Usuario usuario)
@@ -57,7 +57,7 @@ public class UsuarioService
 
     private void ValidarUsuario(Usuario usuario, bool isUpdate = false)
     {
-         if (usuario == null)
+        if (usuario == null)
             throw new ArgumentException("Usuário não pode ser nulo.");
 
         if (!isUpdate && string.IsNullOrWhiteSpace(usuario.Nome))
@@ -66,13 +66,13 @@ public class UsuarioService
         if (usuario.Idade <= 0)
             throw new ArgumentException("Idade do usuário inválida.");
 
-         if (usuario.DataDeNascimento == DateTime.MinValue && usuario.DataDeNascimento != null)
+        if (usuario.DataDeNascimento == DateTime.MinValue && usuario.DataDeNascimento != null)
             throw new ArgumentException("Data de nascimento inválida.");
 
         if (!isUpdate && string.IsNullOrWhiteSpace(usuario.Cpf))
             throw new ArgumentException("CPF do usuário não pode ser vazio.");
         
-         if (!isUpdate && string.IsNullOrWhiteSpace(usuario.Telefone))
+        if (!isUpdate && string.IsNullOrWhiteSpace(usuario.Telefone))
             throw new ArgumentException("Número de telefone do usuário não pode ser vazio.");
 
         if (!isUpdate && string.IsNullOrWhiteSpace(usuario.Email))

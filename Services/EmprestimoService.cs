@@ -137,6 +137,4 @@ public class EmprestimoService
         if (emprestimo.InventarioId <= 0)
             throw new ArgumentException("ID do inventário inválido.");
     }
-
-
 }
