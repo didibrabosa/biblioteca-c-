@@ -17,8 +17,9 @@ public class InventarioRepository : IInventarioRepository
         INSERT INTO Inventario (LivroId, Quantidade, Estado, Disponibilidade)
         VALUES (@LivroId, @Quantidade, @Estado, @Disponibilidade)
         ON DUPLICATE KEY UPDATE
-        Quantidade = Quantidade + @Quantidade, Estado = @Estado, Disponibilidade = @Disponibilidade;";
-
+        Quantidade = Quantidade + @Quantidade, Estado = @Estado, Disponibilidade = @Disponibilidade;
+        SELECT LAST_INSERT_ID();";
+        
         using var connection = new MySqlConnection(_connectionString);
         using var command = new MySqlCommand(query, connection);
 
@@ -28,7 +29,7 @@ public class InventarioRepository : IInventarioRepository
         command.Parameters.AddWithValue("@Disponibilidade", inventario.Disponibilidade);
 
         await connection.OpenAsync();
-        await command.ExecuteNonQueryAsync();
+        inventario.Id = Convert.ToInt32(await command.ExecuteScalarAsync());
         
         return inventario;
     }
