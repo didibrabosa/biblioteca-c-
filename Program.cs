@@ -1,25 +1,53 @@
-﻿using BibliotecaApp.Models;
-using BibliotecaApp.Services;
+using Microsoft.AspNetCore.Builder;
+using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
+using InventarioLivros.Services;
+using InventarioLivros.Services.Interfaces;
+using InventarioLivros.Repositories;
+using InventarioLivros.Services.Implementations;
 
+var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddControllersWithViews();
 
-namespace BibliotecaApp
+// Registro do LivroService
+builder.Services.AddScoped<ILivroService, LivroService>();
+
+// Registro do LivroRepository
+builder.Services.AddScoped<ILivroRepository, LivroRepository>();
+
+builder.Services.AddEndpointsApiExplorer();
+builder.Services.AddSwaggerGen();
+builder.Services.AddCors(options =>
 {
-    class Program
+    options.AddPolicy("AllowAll", policy =>
     {
-        static void Main(string[] args)
-        {
-            var livroCatalogo = new Catalogo {Id = 1, Titulo = "Harry Potter e a Pedra Filosofal", Autor = "JK Rowling", Ano = 1997, Genero = "Fantasia", Paginas = 223};
-            var livroIventario = new Inventario {Id = 1, IdCatalogo = livroCatalogo.Id, Disponivel = true};
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
 
-            var usuario = new Usuario {Id = 1, Nome = "Diego", Endereco = "Rua cinco de janeiro, 41", Email = "deigovasconcelosb@gmail.com", Telefone = "999999999", DataNascimento = new DateTime(2004, 07, 16)};
+var app = builder.Build();
 
-            var emprestimoService = new EmprestimoService();
-
-            emprestimoService.EfetuaEmpretimo(livroIventario, usuario, DateTime.Now.AddDays(7));
-
-            emprestimoService.RecebeDevolucao(livroIventario, usuario);
-        }
-
-    }
+if (app.Environment.IsDevelopment())
+{
+    app.UseDeveloperExceptionPage();
+    app.UseSwagger();
+    app.UseSwaggerUI();
 }
+else
+{
+    app.UseExceptionHandler("/Home/Error");
+    app.UseHsts();
+}
+
+app.UseCors("AllowAll");
+app.UseHttpsRedirection();
+app.UseStaticFiles();
+app.UseRouting();
+app.UseAuthorization();
+
+app.MapControllers();
+
+app.Run();
